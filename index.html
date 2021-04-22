@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Seite von Lukas</title>
+    <title>Ferien-Counter made by Lukas</title>
     <link rel="stylesheet" href="https://bootswatch.com/4/cyborg/bootstrap.css">
   </head>
   <body>
@@ -8,6 +8,14 @@
     <h1>📅Ferien-Countdown📅</h1>
     <p id="FerienCounter">2 Wochen, 1 Tag, 8 Stunden, 32 Minuten, 45 Sekunden</p>
     <h3>bis zu den Osterferien!📅 </h3>
+    <select id= "FerienAuswahl">
+      <option value="winterferien-2022-TH">Winterferien❄️</option>
+      <option value="osterferien-2022-TH">Osterferien🐣</option>
+      <option value="pfingstferien-2022-TH">Pfingstferien</option>
+      <option value="sommerferien-2022-TH">Sommerferien☀️</option>
+      <option value="herbstferien-2022-TH">Herbstferien🍂</option>
+      <option value="weihnachtsferien-2022-TH">Weihnachtsferien🎄</option>
+    </select>
     <br>
     <table border="5px">
       <thead>
@@ -62,9 +70,20 @@
     </table>
     <a href="https://github.com/lgh-ag/lghag.de">Unser Github</a>
     <script>
-     var json = '[{"start":"2022-02-12T00:00Z","end":"2022-02-20T00:00Z","year":2022,"stateCode":"TH","name":"winterferien","slug":"winterferien-2022-TH"},{"start":"2022-04-11T00:00Z","end":"2022-04-24T00:00Z","year":2022,"stateCode":"TH","name":"osterferien","slug":"osterferien-2022-TH"},{"start":"2022-05-27T00:00Z","end":"2022-05-28T00:00Z","year":2022,"stateCode":"TH","name":"pfingstferien","slug":"pfingstferien-2022-TH"},{"start":"2022-07-18T00:00Z","end":"2022-08-28T00:00Z","year":2022,"stateCode":"TH","name":"sommerferien","slug":"sommerferien-2022-TH"},{"start":"2022-10-17T00:00Z","end":"2022-10-30T00:00Z","year":2022,"stateCode":"TH","name":"herbstferien","slug":"herbstferien-2022-TH"},{"start":"2022-12-22T00:00Z","end":"2023-01-04T00:00Z","year":2022,"stateCode":"TH","name":"weihnachtsferien","slug":"weihnachtsferien-2022-TH"}]';
+      var json = "";
+      var obj = null;
 
-     const obj = JSON.parse(json);
+      function reqListener () {
+        json = this.responseText;
+        obj = JSON.parse(json);
+        getSecounds();
+      }
+
+      var oReq = new XMLHttpRequest();
+      oReq.addEventListener("load", reqListener);
+      oReq.open("GET", "http://lgh-ag-cors.herokuapp.com/https://ferien-api.de/api/v1/holidays/TH/2022");
+      oReq.setRequestHeader("x-requested-with", "lghag.de");
+      oReq.send();
 
       function getSecounds() {
         var ferienDate = Date.parse(obj[0].start);
@@ -100,7 +119,15 @@
         setTimeout(getSecounds, 1000);
       }
 
-      getSecounds();
+      var select = document.getElementById("FerienAuswahl");
+
+      
+
+      function selectChange() {
+        console.log(select.value);
+      }
+      
+      select.onchange = selectChange; 
     </script>
   </body>
 </html>  
