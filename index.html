@@ -7,7 +7,7 @@
     <!-- <{tag} {attribut}>{content}</{tag}> -->
     <h1>📅Ferien-Countdown📅</h1>
     <p id="FerienCounter">2 Wochen, 1 Tag, 8 Stunden, 32 Minuten, 45 Sekunden</p>
-    <h3>bis zu den Osterferien!📅 </h3>
+    <h3 id="ferienArt">bis zu den Osterferien!📅 </h3>
     <select id= "FerienAuswahl">
       <option value="winterferien-2022-TH">Winterferien❄️</option>
       <option value="osterferien-2022-TH">Osterferien🐣</option>
@@ -69,13 +69,22 @@
       </tbody>
     </table>
     <a href="https://github.com/lgh-ag/lghag.de">Unser Github</a>
+    
+    <script src="https://cdn.jsdelivr.net/npm/underscore@latest/underscore-umd-min.js"></script>
+    
     <script>
       var json = "";
       var obj = null;
+      var ferienDate = null;
 
       function reqListener () {
         json = this.responseText;
         obj = JSON.parse(json);
+
+        console.log(_.where(obj, {"slug": "pfingstferien-2022-TH"})[0]);
+
+        
+        selectChange();
         getSecounds();
       }
 
@@ -86,7 +95,6 @@
       oReq.send();
 
       function getSecounds() {
-        var ferienDate = Date.parse(obj[0].start);
         var currentDate = Date.now();
        
         var milli = ferienDate - currentDate;
@@ -95,24 +103,18 @@
         
         var wochen = Math.floor(milli / 1000 / 60 / 60 / 24 /7);
         abgezogen = abgezogen + wochen * 1000 * 60 * 60 * 24 * 7;
-        console.log(wochen);
         
         var tage = Math.floor((milli - abgezogen)  / 1000 / 60 / 60 / 24);
         abgezogen = abgezogen + tage * 1000 * 60 * 60 * 24;
-        console.log(tage);
         
         var stunden = Math.floor((milli - abgezogen) / 1000 / 60 / 60);
         abgezogen = abgezogen + stunden * 1000 * 60 * 60;
-        console.log(stunden);
         
         var minuten = Math.floor((milli - abgezogen) / 1000 / 60);
         abgezogen = abgezogen + minuten * 1000 * 60;
-        console.log(minuten);
         
         var sekunden = Math.floor((milli - abgezogen) / 1000);
-        console.log(sekunden);
-        
-        console.log("-------------187-----------");
+       
         
         
         document.getElementById("FerienCounter").innerText = "Es sind noch:  " + wochen + " Wochen, " + tage + " Tage, " + stunden + " Stunden, " + minuten + "Minuten, " + sekunden + " Sekuden";
@@ -124,9 +126,12 @@
       
 
       function selectChange() {
-        console.log(select.value);
+        ferienDate = Date.parse(_.where(obj, {"slug": select.value})[0].start);
+        document.getElementById("ferienArt").innerHTML = "bis zu den "+_.where(obj, {"slug": select.value})[0].name + "! 📅"; 
+
       }
-      
+
+
       select.onchange = selectChange; 
     </script>
   </body>
