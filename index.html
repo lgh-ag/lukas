@@ -6,7 +6,7 @@
   <body>
     <!-- <{tag} {attribut}>{content}</{tag}> -->
     <h1>📅Ferien-Countdown📅</h1>
-    <p id="FerienCounter">2 Wochen, 1 Tag, 8 Stunden, 32 Minuten, 45 Sekunden</p>
+    <h5 id="FerienCounter">Site Construction almost done...</p>
     <h3 id="ferienArt">bis zu den Osterferien!📅 </h3>
     <select id= "FerienAuswahl">
       <option value="winterferien-2022-TH">Winterferien❄️</option>
@@ -81,11 +81,9 @@
         json = this.responseText;
         obj = JSON.parse(json);
 
-        console.log(_.where(obj, {"slug": "pfingstferien-2022-TH"})[0]);
-
         
         selectChange();
-        getSecounds();
+        getSeconds();
       }
 
       var oReq = new XMLHttpRequest();
@@ -94,7 +92,7 @@
       oReq.setRequestHeader("x-requested-with", "lghag.de");
       oReq.send();
 
-      function getSecounds() {
+      function getSeconds() {
         var currentDate = Date.now();
        
         var milli = ferienDate - currentDate;
@@ -118,7 +116,7 @@
         
         
         document.getElementById("FerienCounter").innerText = "Es sind noch:  " + wochen + " Wochen, " + tage + " Tage, " + stunden + " Stunden, " + minuten + "Minuten, " + sekunden + " Sekuden";
-        setTimeout(getSecounds, 1000);
+        setTimeout(getSeconds, 1000);
       }
 
       var select = document.getElementById("FerienAuswahl");
@@ -127,8 +125,9 @@
 
       function selectChange() {
         ferienDate = Date.parse(_.where(obj, {"slug": select.value})[0].start);
-        document.getElementById("ferienArt").innerHTML = "bis zu den "+_.where(obj, {"slug": select.value})[0].name + "! 📅"; 
-
+        var ferien = _.where(obj, {"slug": select.value})[0].name;
+        document.getElementById("ferienArt").innerHTML = "bis zu den "+ (ferien.slice(0, 1).toUpperCase())  + (ferien.slice(1)) + "! 📅"; 
+        getSeconds();
       }
 
 
