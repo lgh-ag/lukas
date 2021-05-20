@@ -17,7 +17,7 @@
       <option value="weihnachtsferien-2022-TH">Weihnachtsferien🎄</option>
     </select>
     <br>
-    <table border="5px">
+    <table id="datentabelle"  border="5px">
       <thead>
         <tr>
           <td>
@@ -31,43 +31,13 @@
           </td>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>
-            <p>Sommerferien</p>
-          </td>
-          <td>
-            <p>01.01.2021</p>
-          </td>
-          <td>
-            <p>31.12.2021</p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>Osterferien</p>
-          </td>
-          <td>
-            <p>01.04.2021</p>
-          </td>
-          <td>
-            <p>02.04.2021</p>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>Weihnachtsferien</p>
-          </td>
-          <td>
-            <p>17.12.2021</p>
-          </td>
-          <td>
-            <p>01.01.2022</p>
-          </td>
-        </tr>
+          
 
-      </tbody>
+      
     </table>
+    <br>
+    <br>
+    <br>
     <a href="https://github.com/lgh-ag/lghag.de">Unser Github</a>
     
     <script src="https://cdn.jsdelivr.net/npm/underscore@latest/underscore-umd-min.js"></script>
@@ -84,6 +54,7 @@
         
         selectChange();
         getSeconds();
+        tabelleDatenHolen();
       }
 
       var oReq = new XMLHttpRequest();
@@ -130,8 +101,29 @@
         getSeconds();
       }
 
-
+     
       select.onchange = selectChange; 
-    </script>
+
+      function tabelleDatenHolen() {
+        var i;
+        for (i = 0; i < obj.length; i++) {
+          tabelleAusfuellen(i + 1, obj[i].name, obj[i].start, obj[i].end)
+        }
+      }
+
+      
+      function tabelleAusfuellen(targetRow,  cell1text, cell2text, cell3text) {
+        var table = document.getElementById("datentabelle");
+        var row = table.insertRow(targetRow);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);        
+        var cell3 = row.insertCell(2);
+        cell1.innerHTML = cell1text;
+        cell2.innerHTML = cell2text;
+        cell3.innerHTML = cell3text;
+      }
+
+    
+      </script>
   </body>
 </html>  
